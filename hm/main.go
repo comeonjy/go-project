@@ -143,4 +143,5 @@ func DownloadPage(url string) *http.Response {
 		return nil
 	}
 	return resp
+
 }
