@@ -42,7 +42,7 @@ func init()  {
 func main()  {
 	//GetHmMember()
 
-	//GetHmMemberFromUid()
+	GetHmMemberFromUid()
 
 
 }
@@ -51,7 +51,7 @@ func main()  {
 通过ID暴力抓取用户QQ、手机信息
  */
 func GetHmMemberFromUid(){
-	for uid:=1000;uid<6000;uid++{
+	for uid:=0;uid<7000;uid++{
 		url:="http://720.huimwang.com/people?uid="+strconv.Itoa(uid)
 		resp:=DownloadPage(url)
 		p, err := goquery.Parse(resp.Body)
@@ -75,11 +75,13 @@ func GetHmMemberFromUid(){
 					_, err = db.Exec("update s_hm_member set qq=? where pk_user_main=?",qq,uid)
 				}else{
 					_, err = db.Exec("insert into s_hm_member (pk_user_main,phone,qq) values (?,?,?)",uid,phone,qq)
+					fmt.Println("数据插入",uid)
 				}
 				if err != nil {
 					fmt.Println("sql错误：", err)
 					return
 				}
+
 			}
 			if err != nil {
 				fmt.Println("数据插入错误：", err)
@@ -105,7 +107,7 @@ func IssetMember(pk_user_main int) bool {
  */
 func GetHmMember()  {
 	var url="http://720.huimwang.com/people?ajax=1&page="
-	for i:=1;i<124;i++ {
+	for i:=1;i<154;i++ {
 		resp := DownloadPage(url + strconv.Itoa(i))
 		b, _ := ioutil.ReadAll(resp.Body)
 		arr := Result{}
