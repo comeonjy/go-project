@@ -10,10 +10,11 @@ import (
 	"time"
 )
 
-var rateLimit = time.Tick(1000 * time.Microsecond)
+//var rateLimit = time.Tick(1000 * time.Microsecond)
 //TODO 不同返回值的fetcher
 func Fetcher(urls string) ([]byte, error) {
-	<-rateLimit
+	//<-rateLimit
+	fmt.Println(urls)
 	resp := getResp(urls, returnIp())
 	return ioutil.ReadAll(resp.Body)
 }
@@ -38,7 +39,7 @@ func getResp(urls string, ip string) *http.Response {
 		}
 		//设置超时时间
 		timeout := time.Duration(10 * time.Second)
-		fmt.Printf("使用代理:%s\n", proxy)
+		//fmt.Printf("使用代理:%s\n", proxy)
 		client := &http.Client{}
 		if ip != "local" {
 			client = &http.Client{

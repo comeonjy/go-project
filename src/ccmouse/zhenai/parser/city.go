@@ -18,7 +18,7 @@ func ParseCity(contents []byte) engine.ParseResult {
 	//}
 
 
-	member_rg := regexp.MustCompile(`<a href="(http://[a-zA-Z0-9]+.zhenai.com/u/[0-9]+)"[^>]*>([^<].)</a>`)
+	member_rg := regexp.MustCompile(`<a href="(http://[a-zA-Z0-9]+.zhenai.com/u/[0-9]+)"[^>]*>([^<]+)</a>`)
 	member_submatch := member_rg.FindAllSubmatch(contents, -1)
 	for _, m := range member_submatch {
 		result.Items=append(result.Items,string(m[2]))
