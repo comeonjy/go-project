@@ -1,14 +1,49 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
-func main() {
-	arr := []int{6, 1, 2, 7, 9,6, 1, 2, 7, 9, 3, 4, 5, 10, 8, 3, 4, 5, 10, 8}
-	//arr := []int{2,1,3}
-	Sort(arr)
+func init()  {
+	rand.Seed(1e9)
 }
 
-func Sort(arr []int) {
+func main() {
+
+	var arr []int
+	for i:=0;i<30;i++{
+		arr=append(arr,rand.Intn(1000))
+	}
+	checkSort(arr)
+	checkSort(insertSort(arr))
+
+	quickSort(arr)
+	checkSort(arr)
+}
+
+// 插入排序
+func insertSort(arr []int) []int {
+	var arrCopy []int
+	arrCopy=append(arrCopy,arr...)
+
+	for k1,v1:=range arrCopy {
+		for k2 := range arr[:k1] {
+			if arr[k1] < arr[k2] {
+				arr = append(arr[:k1], arr[k1+1:]...)
+				var temp []int
+				temp=append(temp,arr[:k2]...)
+				arr = append(append(temp,v1), arr[k2:]...)
+			}
+		}
+	}
+	return arr
+}
+
+
+
+// 快速排序
+func quickSort(arr []int) {
 	if len(arr)<=1 {
 		return
 	}
@@ -28,8 +63,25 @@ func Sort(arr []int) {
 	}
 	arr[0], arr[i] = arr[i], arr[0]
 
-	Sort(arr[:i])
-	Sort(arr[i+1:])
+	quickSort(arr[:i])
+	quickSort(arr[i+1:])
 
+	//fmt.Println(arr)
+}
+
+// 排序检查
+func checkSort(arr []int){
+	flag:=""
+	for k:=range arr{
+		if k>0 && arr[k]<arr[k-1] {
+			flag=fmt.Sprintf("%v",arr[:k+1])
+			break
+		}
+	}
+	if flag!="" {
+		fmt.Println("排序错误",flag)
+	}else{
+		fmt.Println("排序正确")
+	}
 	fmt.Println(arr)
 }

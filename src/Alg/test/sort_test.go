@@ -1,18 +1,43 @@
 package test
 
 import (
+	"math/rand"
 	"testing"
 )
 
+func init()  {
+	rand.Seed(1e9)
+}
+
 func BenchmarkSort(b *testing.B) {
-	arr := []int{6, 1, 123, 2, 7, 9, 34, 6, 15, 2, 24, 71, 932, 34, 6, 1, 2, 73, 9, 34, 62, 1, 2, 1, 2, 7, 9}
+	var arr []int
+	for i:=0;i<30;i++{
+		arr=append(arr,rand.Intn(1000))
+	}
 	for i := 0; i < b.N; i++ {
-		Sort(arr)
+		insertSort(arr)
 	}
 	b.Log(arr)
 }
 
-func Sort(arr []int) {
+func insertSort(arr []int) []int {
+	var arrCopy []int
+	arrCopy=append(arrCopy,arr...)
+
+	for k1,v1:=range arrCopy {
+		for k2 := range arr[:k1] {
+			if arr[k1] < arr[k2] {
+				arr = append(arr[:k1], arr[k1+1:]...)
+				var temp []int
+				temp=append(temp,arr[:k2]...)
+				arr = append(append(temp,v1), arr[k2:]...)
+			}
+		}
+	}
+	return arr
+}
+
+func quickSort(arr []int) {
 	if len(arr) <= 1 {
 		return
 	}
@@ -32,6 +57,6 @@ func Sort(arr []int) {
 	}
 	arr[0], arr[i] = arr[i], arr[0]
 
-	Sort(arr[0:i])
-	Sort(arr[i+1:])
+	quickSort(arr[0:i])
+	quickSort(arr[i+1:])
 }
